@@ -284,7 +284,12 @@ def collate_mimic(batch, tokenizer, tab_preprocessor):
     
     # Turn tabular into a DataFrame for easier manipulation
     # May not be needed with widedeep
-    tabular = tab_preprocessor.transform(pd.DataFrame(tabular))
+    col_idx = [(c, i) for i, c in enumerate(tabular[0].index)]
+    cat = [i[1] for i in col_idx if i[0] in cat_cols]
+    cont = [i[1] for i in col_idx if i[0] not in cat_cols]
+    tabular = pd.DataFrame(tabular)
+    tabular.iloc[:,cont] = tabular.iloc[:,cont].fillna(0)
+    tabular = tab_preprocessor.transform(tabular)
     tabular = np.nan_to_num(tabular, nan=19996)
     tabular = torch.tensor(tabular)
     return image, text, attention_masks, tabular
