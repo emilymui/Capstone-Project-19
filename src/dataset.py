@@ -351,7 +351,7 @@ class MIMICDataModule(pl.LightningDataModule):
                                              tab_preprocessor = self.tab_preprocessor))
     
     def test_dataloader(self):
-        return DataLoader(self.val_data, batch_size=self.batch_size, shuffle=False,
+        return DataLoader(self.test_data, batch_size=self.batch_size, shuffle=False,
                           num_workers=self.num_workers, persistent_workers=True,
                           collate_fn=partial(collate_mimic, tokenizer=self.tokenizer,
                                              tab_preprocessor = self.tab_preprocessor))
