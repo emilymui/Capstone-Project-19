@@ -59,12 +59,12 @@ callbacks = [
 ]
 
 cfg = config()
-acc = 'dp' if torch.cuda.device_count() < 2 else 'ddp'
+strat = 'dp' if torch.cuda.device_count() < 2 else 'ddp'
 #print(torch.cuda.device_count(), torch.cuda.is_available(), torch.version.cuda, torch.backends.cudnn.enabled, torch.backends.cudnn.version())
 #print(torch.cuda.device_count())
-#print(acc)
+print(start, torch.cuda.device_count(), torch.cuda.is_available(), torch.version.cuda)
 trainer = pl.Trainer(default_root_dir='/scratch/arz8448/capstone/notebooks/outputs/', gpus=torch.cuda.device_count(),
-                     accelerator=acc, precision=16, callbacks=callbacks,
+                     accelerator='auto', strategy=strat, precision=16, callbacks=callbacks,
                      check_val_every_n_epoch=1, max_epochs=12)
 data = dataset.MIMICDataModule(cfg)
 print('Begin data setup')
